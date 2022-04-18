@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Антропометрия</h1>
+{% if anthropometry %}
+    {% if anthropometry.photo %}
+        <img src={{file_name}}
+             alt="здесь должна была быть картинка, но не нашлась">
+    {% endif %}
+    <h5>Ваш рост: {{anthropometry.height}}</h5>
+    <h5>Ваш вес: {{anthropometry.weight}}</h5>
+    <h5>Обхват вашей талии: {{anthropometry.waist}}</h5>
+    <h5>Обхват ваших бёдер: {{anthropometry.hip_girth}}</h5>
+    <h5>Обхват вашей груди: {{anthropometry.bust}}</h5>
+{% endif %}
+<div>
+    <form class="login_form" method="post" enctype="multipart/form-data">
+       <div class="form-group">
+            <p>Выберите дату: <input type="date" name="calendar">
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+</div>
+{{message}}
+{% endblock %}
