@@ -1,9 +1,34 @@
+:root {
+    --main-bg-color: #383b40;
+    --dark-bg-color: #27292b;
+    --light-font-color: rgb(235, 234, 240);
+    --main-hover-color: #dc143c;
+    --main-anim-speed: 0.4s;
+}
+a {
+    display: block;
+    color: whitesmoke;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-stretch: normal;
+}
+
+a:hover {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-stretch: normal;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #27292b;
+  background-color: var(--dark-bg-color);
   border-radius: 5px;
 }
 
@@ -12,30 +37,31 @@ li {
 }
 
 li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-stretch: normal;
+    display: block;
+    color: var(light-font-color);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-stretch: normal;
+    transition: var(--main-anim-speed);
 }
 
 li a:hover {
   background-color: #111;
   border-radius: 5px;
-  background-color:  #dc143c;
+  background-color:  var(--main-hover-color);
 }
 
 body {
-  background-color: #383b40;
+  background-color: var(--main-bg-color);
 }
 
 .player {
-  margin-top: 25px;
+    margin-top: 25px;
 }
 
 .text {
-  color: rgb(235, 234, 240);
+  color: var(--light-font-color);
   font-family: Arial;
 }
 
@@ -43,25 +69,26 @@ button{
   margin-top: 15px;
   height: 50px;
   width: 200px;
-  background-color: #27292b;
+  background-color: var(--dark-bg-color);
   border-radius: 5px;
-  color: rgb(235, 234, 240);
-  border-color: #27292b;
+  color: var(--light-font-color);
+  border-color: var(--dark-bg-color);
 }
 
 button:hover {
   margin-top: 15px;
   height: 50px;
   width: 200px;
-  background-color: #3a278f;
+  background-color: var(--main-hover-color);
   border-radius: 5px;
-  color: rgb(235, 234, 240);
+  color: var(--light-font-color);
 }
+
 form.login_form {
     margin-left: auto;
     margin-right: auto;
     max-width: 450px;
-    background-color: #383b40;
+    background-color: var(--main-bg-color);
     border: 1px solid gray;
     border-radius: 5px;
     padding: 10px;
