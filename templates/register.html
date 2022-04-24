@@ -50,6 +50,10 @@
         {% endfor %}
     </p>
     <p>
+        {{ form.id_telegram.label }}<br>
+        {{ form.id_telegram(class="form-control") }}<br>
+    </p>
+    <p>
         <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lep5D4fAAAAAFNHHPRPkPP4z6w0zAlje8sW9X1K"></div>
         {% for error in form.recaptcha.errors %}
             <p class="alert alert-danger" role="alert">

@@ -1,28 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>training wisely</title>
-        <link rel="stylesheet" href="static/css/style.css">
-    </head>
-    <body>
-        {% if current_user.is_authenticated %}
-            <ul>
-                <li><a href="logout">выйти из аккаунта</a></li>
-                <li><a href="my_training">мои тренировки</a></li>
-                <li><a href="catalog">каталог</a></li>
-                <li><a href="anthropometry">антропометрия</a></li>
-            </ul>
-            <p></p>
-            <center><p class="text">Привет, {{ current_user.name }}</p></center>
-        {% else %}
-            <ul>
-                <li><a href="my_training">мои тренировки</a></li>
-                <li><a href="catalog">каталог</a></li>
-                <li><a href="anthropometry">антропометрия</a></li>
-                <li><a href="register">зарегистрироваться</a></li>
-                <li><a href="login">войти</a></li>
-            </ul>
-        {% endif %}
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+{% endblock %}

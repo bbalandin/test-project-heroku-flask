@@ -1,39 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>training wisely</title>
-    <link rel="stylesheet" href="static/css/style.css">
-</head>
-<body>
-<header>
-    {% if current_user.is_authenticated %}
-        <ul>
-            <li><a href="logout">выйти из аккаунта</a></li>
-            <li><a href="my_training">мои тренировки</a></li>
-            <li><a href="catalog">каталог</a></li>
-            <li><a href="anthropometry">антропометрия</a></li>
-            <li><a href="record">рекорды</a> </li>
-        </ul>
-        <p></p>
-        <center><p class="text">Привет, {{ current_user.name }}</p></center>
-    {% else %}
-        <ul>
-            <li><a href="my_training">мои тренировки</a></li>
-            <li><a href="catalog">каталог</a></li>
-            <li><a href="anthropometry">антропометрия</a></li>
-            <li><a href="register">зарегистрироваться</a></li>
-            <li><a href="login">войти</a></li>
-        </ul>
-    {% endif %}
-</header>
-<!-- Begin page content -->
-<main role="main" class="container">
-    {% block content %}{% endblock %}
-</main>
-</body>
+    <head>
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>training wisely</title>
+        <link rel="stylesheet" href="static/css/style.css">
+    </head>
+    <body>
+    <header>
+        {% if current_user.is_authenticated %}
+            <ul>
+                <li><a href="logout">выйти из аккаунта</a></li>
+                <li><a href="my_training">мои тренировки</a></li>
+                <li><a href="catalog">каталог</a></li>
+                <li><a href="anthropometry">антропометрия</a></li>
+                <li><a href="record">рекорды</a> </li>
+            </ul>
+            <p></p>
+            <center><p class="text">Привет, {{ current_user.name }}</p></center>
+        {% else %}
+            <ul>
+                <li><a href="my_training">мои тренировки</a></li>
+                <li><a href="catalog">каталог</a></li>
+                <li><a href="anthropometry">антропометрия</a></li>
+                <li><a href="register">зарегистрироваться</a></li>
+                <li><a href="login">войти</a></li>
+            </ul>
+        {% endif %}
+    </header>
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        {% block content %}{% endblock %}
+    </main>
+    </body>
 </html>
