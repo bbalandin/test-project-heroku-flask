@@ -126,6 +126,7 @@ def reqister():
             name=form.name.data,
             email=form.email.data,
             surname=form.surname.data,
+            id_telegram=form.id_telegram.data
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -263,37 +264,44 @@ def add_record():
                            form=form)
 
 
-# @app.route('/get_record', methods=['GET', 'POST'])
-# @login_required
-# def get_record():
-#     form = RecordGetForm()
-#     db_sess = db_session.create_session()
-#     anthropometry = db_sess.query(Anthropometry).filter(Record. == form.date_str.data, Anthropometry.user_id == current_user.id).first()
-#     for dates in db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id):
-#         print(dates.date_)
-#     # anth = db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id)
-#     # edit_anthropometry(anth)
-#     # return render_template('get_anthropometry.html', title='Добавление антропометрии',
-#     #                        form=form)
-#     if not anthropometry is None:
-#         if anthropometry.is_private:
-#             anthropometry_form = Anthropometry()
-#             anthropometry.height = anthropometry_form.rehashing(anthropometry.height)
-#             anthropometry.weight = anthropometry_form.rehashing(anthropometry.weight)
-#             anthropometry.waist = anthropometry_form.rehashing(anthropometry.waist)
-#             anthropometry.hip_girth = anthropometry_form.rehashing(anthropometry.hip_girth)
-#             anthropometry.bust = anthropometry_form.rehashing(anthropometry.bust)
-#     return render_template('get_anthropometry.html', title='Добавление антропометрии',
-#                            form=form, anthropometry=anthropometry)
+@app.route('/get_record', methods=['GET', 'POST'])
+@login_required
+def get_record():
+    form = RecordForm()
+    if form.validate_on_submit():
+        record_form = Record()
+        db_sess = db_session.create_session()
+        # record_name = record_form.hashing(form.rec_name)
+        record = db_sess.query(Record).filter(Record.user_id == current_user.id)
+        list_parameters = list()
+        for records in record:
+            if records.is_private:
+                if record_form.rehashing(records.record_name).lower() == form.rec_name.data.lower():
+                    list_parameters.append(float(record_form.rehashing(records.parameter)))
+            else:
+                if records.record_name == form.rec_name.data:
+                    list_parameters.append(float(records.parameter))
+        # for dates in db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id):
+        #     print(dates.date_)
+        # anth = db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id)
+        # edit_anthropometry(anth)
+        # return render_template('get_anthropometry.html', title='Добавление антропометрии',
+        #                        form=form)
+        # if record.is_private:
+        #     record.record_name = record_form.rehashing(record.parameter)
+        print(list_parameters)
+        record_form.parameter = max(list_parameters)
+        return render_template('get_record.html', title='Добавление антропометрии',
+                               form=form, record=record_form)
+    return render_template('get_record.html', title='Добавление антропометрии',
+                           form=form)
 
 
-def main():
-    db_session.global_init("db/AF.db")
-    app.register_blueprint(users_api.blueprint)
-    app.run()
+# def main():
+#     db_session.global_init("db/AF.db")
+#     app.run()
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    db_session.global_init("db/AF.db")
-    app.run(host='0.0.0.0', port=port)
+    db_session.global_init()
+    app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))

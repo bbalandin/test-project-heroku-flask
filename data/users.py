@@ -18,7 +18,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-
+    id_telegram = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    confirmed = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     anthropometry = orm.relation("Anthropometry", back_populates='user')
     record = orm.relation("Record", back_populates='user')
 
