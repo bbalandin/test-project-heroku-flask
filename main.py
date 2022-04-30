@@ -20,7 +20,6 @@ from flask import url_for
 from PIL import Image
 import smtplib
 from email.mime.text import MIMEText
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super_secret_key_AF'
@@ -64,9 +63,9 @@ def my_training():
     return render_template('my_training.html')
 
 
-# @app.route('/anthropometry')
-# def anthropometry():
-#     return render_template('anthropometry.html')
+@app.route('/my_training_fire')
+def my_training_fire():
+    return render_template('my_training_fire.html')
 
 
 @app.route('/catalog')
@@ -74,24 +73,48 @@ def catalog():
     return render_template('catalog.html')
 
 
-@app.route('/player')
-def player():
-    return render_template('player.html')
+@app.route('/stato_chest')
+def stato_chest():
+    return render_template('stato_chest.html')
+
+
+@app.route('/stato_back')
+def stato_back():
+    return render_template('stato_back.html')
+
+
+@app.route('/stato_legs')
+def stato_legs():
+    return render_template('stato_legs.html')
 
 
 @app.route('/base_training')
 def base_training():
-    return render_template('promo_form.html')
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user.cycle = 'Базовый'
+    db_sess.commit()
+    return render_template('my_training.html')
 
 
 @app.route('/fat_burning_training')
 def fat_burning_training():
-    return render_template('promo_form_burn.html')
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user.cycle = 'Жиросжигающий'
+    db_sess.commit()
+    return render_template('my_training.html')
+    # return render_template('promo_form_burn.html')
 
 
 @app.route('/power_training')
 def power_training():
-    return render_template('promo_form_power.html')
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user.cycle = 'Силовой'
+    db_sess.commit()
+    return render_template('my_training.html')
+    # return render_template('promo_form_power.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -192,24 +215,6 @@ def add_anthropometry():
                            form=form)
 
 
-# @app.route('/get_anthropometry', methods=['GET', 'POST'])
-# @login_required
-# def get_anthropometry():
-#     form = AnthropometryGetForm()
-#     db_sess = db_session.create_session()
-#     print(form.validate_on_submit())
-#     if form.validate_on_submit():
-#         print(1)
-#         anthropometry = db_sess.query(Anthropometry).filter(Anthropometry.date_ == form.date_str.data).first()
-#         # return render_template('get_anthropometry.html', title='Добавление антропометрии',
-#         #                        form=form)
-#         return render_template('get_anthropometry.html', title='Добавление антропометрии',
-#                                form=form, anthropometry=anthropometry)
-#     anthropometry = db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id)
-#     for elems in anthropometry:
-#         print(elems.height)
-#     return render_template('get_anthropometry.html', title='Добавление антропометрии',
-#                            form=form)
 @app.route('/get_anthropometry', methods=['GET', 'POST'])
 @login_required
 def get_anthropometry():
@@ -221,12 +226,6 @@ def get_anthropometry():
         date_anth = str(request.form['calendar'])
         anthropometry = db_sess.query(Anthropometry).filter(Anthropometry.date_ == date_anth,
                                                             Anthropometry.user_id == current_user.id).first()
-        # for dates in db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id):
-        #     print(dates.date_)
-        # anth = db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id)
-        # edit_anthropometry(anth)
-        # return render_template('get_anthropometry.html', title='Добавление антропометрии',
-        #                        form=form)
         if not anthropometry is None:
             if anthropometry.is_private:
                 anthropometry_form = Anthropometry()
@@ -236,7 +235,8 @@ def get_anthropometry():
                 anthropometry.hip_girth = anthropometry_form.rehashing(anthropometry.hip_girth)
                 anthropometry.bust = anthropometry_form.rehashing(anthropometry.bust)
         file_name = 'static/' + 'images/' + str(current_user.id) + str(date.today()) + "file.png"
-        return render_template('get_anthropometry.html', title='Добавление антропометрии', anthropometry=anthropometry, file_name=file_name)
+        return render_template('get_anthropometry.html', title='Добавление антропометрии', anthropometry=anthropometry,
+                               file_name=file_name)
 
 
 @app.route('/record', methods=['GET', 'POST'])
@@ -281,15 +281,6 @@ def get_record():
             else:
                 if records.record_name == form.rec_name.data:
                     list_parameters.append(float(records.parameter))
-        # for dates in db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id):
-        #     print(dates.date_)
-        # anth = db_sess.query(Anthropometry).filter(Anthropometry.user_id == current_user.id)
-        # edit_anthropometry(anth)
-        # return render_template('get_anthropometry.html', title='Добавление антропометрии',
-        #                        form=form)
-        # if record.is_private:
-        #     record.record_name = record_form.rehashing(record.parameter)
-        print(list_parameters)
         record_form.parameter = max(list_parameters)
         return render_template('get_record.html', title='Добавление антропометрии',
                                form=form, record=record_form)
@@ -297,11 +288,11 @@ def get_record():
                            form=form)
 
 
-# def main():
-#     db_session.global_init("db/AF.db")
-#     app.run()
+def main():
+    db_session.global_init("db/AF.db")
+    app.register_blueprint(users_api.blueprint)
+    app.run()
 
 
 if __name__ == '__main__':
-    db_session.global_init()
-    app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))
+    main()
